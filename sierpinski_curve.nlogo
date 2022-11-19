@@ -1,14 +1,15 @@
+; SIERPINSKI
 globals[
   pattern
-
 ]
 
 
+
 to setup
-  ca ; clear-all
+  ca
   reset-ticks
   resize-world -30 30 -30 30
-  set pattern "F"
+  set pattern "A"
 
 end
 
@@ -24,13 +25,14 @@ to update-pattern
   let aux ""
   let i 0
   while [i < length pattern] [
-    ifelse (item i pattern) = "F"
-      [set aux word aux "F+F-F-F+F"]
-      [set aux word aux (item i pattern)]
-     set i i + 1 ; i = i + 1
+    (ifelse
+      item i pattern = "A" [set aux word aux "B-A-B"] ;  A → B-A-B
+      item i pattern = "B" [set aux word aux "A+B+A"] ; B → A+B+A
+      [set aux word aux item i pattern])
+    set i i + 1 ; i = i + 1
   ]
 
-  set pattern aux ; pattern=aux
+  set pattern aux
 
 end
 
@@ -52,9 +54,10 @@ end
 
 to move-turtle [action]
   (ifelse
-    action = "F" [forward 0.5]
-    action = "+" [left 90]
-    action = "-" [right 90])
+    action = "A" [forward 0.5]
+    action = "B" [forward 0.5]
+    action = "+" [left 60]
+    action = "-" [right 60])
 
 end
 @#$#@#$#@

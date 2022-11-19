@@ -1,4 +1,4 @@
-; DRAGON
+; SIERPINSKI TRIANGLE
 globals[
   pattern
 ]
@@ -6,10 +6,10 @@ globals[
 
 
 to setup
-  ca ; clear-all
+  ca
   reset-ticks
   resize-world -30 30 -30 30
-  set pattern "F"; axiom
+  set pattern "F-G-G"
 
 end
 
@@ -26,13 +26,13 @@ to update-pattern
   let i 0
   while [i < length pattern] [
     (ifelse
-      item i pattern = "F" [set aux word aux "F+G"]
-      item i pattern = "G" [set aux word aux "F-G"]
+      (item i pattern) = "F" [set aux word aux "F-G+F+G-F"] ; F ->  F−G+F+G−F
+      (item i pattern) = "G" [set aux word aux "GG"] ; G -> GG
       [set aux word aux item i pattern])
     set i i + 1 ; i = i + 1
   ]
 
-  set pattern aux ; pattern=aux
+  set pattern aux
 
 end
 
@@ -56,8 +56,8 @@ to move-turtle [action]
   (ifelse
     action = "F" [forward 0.5]
     action = "G" [forward 0.5]
-    action = "+" [left 90]
-    action = "-" [right 90])
+    action = "+" [left 120]
+    action = "-" [right 120])
 
 end
 @#$#@#$#@
