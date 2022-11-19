@@ -5,32 +5,17 @@ globals[
 
 
 to setup
-  clear-all
+  ca ; clear-all
   reset-ticks
   resize-world -30 30 -30 30
-  setup-turtles
-  setup-patches
   set pattern "F"
 
 end
 
 
-to setup-turtles
-  create-turtles 1 [setxy 0 0]
-
-end
-
-to setup-patches
-  ask turtles [set pcolor black]
-  ask turtles [set heading 0]
-
-end
-
-
 to go-once
-  draw-pattern
+  do-pattern
   update-pattern
-
   tick
 end
 
@@ -38,18 +23,10 @@ end
 to update-pattern
   let aux ""
   let i 0
-  while [i < length pattern]
-  [
-    (ifelse
-      item i pattern = "F" [
-        set aux word aux "F+F−F−F+F"
-      ]
-      ; otherwise
-
-      [set aux word aux item i pattern
-
-    ])
-
+  while [i < length pattern] [
+    (ifelse item i pattern = "F"
+      [set aux word aux "F+F-F-F+F"]
+      [set aux word aux item i pattern])
     set i i + 1 ; i = i + 1
   ]
 
@@ -57,26 +34,28 @@ to update-pattern
 
 end
 
-to draw-pattern
+to do-pattern
+  clear-drawing
+  create-turtles 1 [setxy 0 0 set heading 0 pen-down]
+  ask turtles[
+    let i 0
+    while [i < length pattern]
+    [
+      move-turtle (item i pattern)
+      set i i + 1
 
-  let i 0
-  while [i < length pattern]
-  [
-    (ifelse
-      item i pattern = "F" [
-        ask turtles [pen-down pen-up]
-      ]
-
-      item i pattern = "+" [
-        ask turtles [set heading heading left 90]
-      ]
-
-      item i pattern = "-"[
-        ask turtles [set heading heading right 90]
-      ])
-
-    set i i + 1
+    ]
+    die ; kill the turtle to
   ]
+
+end
+
+to move-turtle [action]
+  (ifelse
+    action = "F" [forward 0.5]
+    action = "+" [left 90]
+    action = "-" [right 90])
+
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
